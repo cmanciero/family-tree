@@ -1,15 +1,9 @@
-import React from 'react'
+import React from 'react';
 
-interface Props {
+interface IHomeProps {}
 
-}
+const Home = (props: IHomeProps) => {
+	return <div></div>;
+};
 
-const Home = (props: Props) => {
-	return (
-		<div>
-
-		</div>
-	)
-}
-
-export default Home
+export default Home;

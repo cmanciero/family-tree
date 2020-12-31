@@ -1,20 +1,21 @@
+import { Button, FormControl, InputLabel, MenuItem, Select, TextField } from '@material-ui/core';
 import React, { ChangeEvent, FormEvent, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { BloodType, FAMILY, Gender } from '../../data/family';
 
-export interface IPerson {
+export interface IPersonProps {
 	id?: number;
 	name?: string;
 	age?: number;
-	dateOfBirth?: Date;
+	dateOfBirth?: string;
 	emailAddress?: string;
 	bloodType?: BloodType;
 	gender?: Gender;
 }
 
-const Person = (props: IPerson) => {
+const Person = (props: IPersonProps) => {
 	const { id } = useParams<{ id: string }>();
-	const [person, setPerson] = useState<IPerson>();
+	const [person, setPerson] = useState<IPersonProps>();
 
 	useEffect(() => {
 		const selectedPerson = FAMILY.find((f) => f.id === +id);
@@ -28,7 +29,7 @@ const Person = (props: IPerson) => {
 		console.log(person);
 	};
 
-	const handleChange = (event: ChangeEvent) => {
+	const handleChange = (event: ChangeEvent<{ value: unknown }>) => {
 		const inputElement: HTMLInputElement = event.target as HTMLInputElement;
 		const name = inputElement.name;
 		const value = inputElement.value;
@@ -39,39 +40,47 @@ const Person = (props: IPerson) => {
 		<>
 			{person && (
 				<form onSubmit={submitForm} style={{ display: 'flex', flexDirection: 'column' }}>
-					<label>
-						Name:
-						<input type='text' name='name' value={person?.name} onChange={handleChange} />
-					</label>
-					<label>
-						Date of birth:
-						<input type='text' name='dateOfBirth' value={person?.dateOfBirth?.toLocaleDateString()} onChange={handleChange} />
-					</label>
-					<label>
-						E-mail:
-						<input type='email' name='email' value={person?.emailAddress} onChange={handleChange} />
-					</label>
-					<label>
-						Blood type:
-						<select name='bloodType' value={person?.bloodType} onChange={handleChange}>
+					<FormControl>
+						<TextField name='name' label='Name' value={person?.name} onChange={handleChange} />
+					</FormControl>
+					<FormControl>
+						<TextField
+							name='dateOfBirth'
+							label='Date of birth'
+							value={person?.dateOfBirth}
+							onChange={handleChange}
+							type='date'
+							InputLabelProps={{
+								shrink: true,
+							}}
+						/>
+					</FormControl>
+					<FormControl>
+						<TextField name='email' label='E-mail' value={person?.emailAddress} onChange={handleChange} />
+					</FormControl>
+					<FormControl>
+						<InputLabel>Blood type:</InputLabel>
+						<Select name='bloodType' value={person?.bloodType} onChange={handleChange}>
 							{Object.values(BloodType).map((key) => (
-								<option key={key} value={key}>
+								<MenuItem key={key} value={key}>
 									{key}
-								</option>
+								</MenuItem>
 							))}
-						</select>
-					</label>
-					<label>
-						Gender:
-						<select name='gender' value={person?.gender} onChange={handleChange}>
+						</Select>
+					</FormControl>
+					<FormControl>
+						<InputLabel>Gender:</InputLabel>
+						<Select name='gender' value={person?.gender} onChange={handleChange}>
 							{Object.values(Gender).map((key) => (
-								<option key={key} value={key}>
+								<MenuItem key={key} value={key}>
 									{key}
-								</option>
+								</MenuItem>
 							))}
-						</select>
-					</label>
-					<button type='submit'>Update person</button>
+						</Select>
+					</FormControl>
+					<Button type='submit' variant='contained' color='primary'>
+						Update person
+					</Button>
 				</form>
 			)}
 		</>

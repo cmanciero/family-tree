@@ -2,9 +2,9 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { ROUTES } from '../../router/routes';
 
-interface Props {}
+interface INavigationProps {}
 
-const Navigation = (props: Props) => {
+const Navigation = (props: INavigationProps) => {
 	return (
 		<nav>
 			<ul>
